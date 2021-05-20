@@ -1,15 +1,24 @@
-const express=require('express')
-const path= require('path')
-const app= express()
-const route=require('./routes/route')
-const ejs = require('ejs');
+const path = require('path');
 
-app.use(express.static(path.join(__dirname,'public')))
-// app.set('view engine', 'ejs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose= require('./db')
+
+const app = express();
+
 app.set('view engine', 'ejs');
-// app.use('/',(req,res)=>{
-//   res.send("<h1>HI</h1>")
-// })
-app.use(route);
+app.set('views', 'views');
 
-app.listen(3000)
+const adminData = require('./routes/route');
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(adminData);
+
+app.use((req, res, next) => {
+  res.status(404).render('404', { pageTitle: 'Page Not Found' });
+});
+
+app.listen(3000);
