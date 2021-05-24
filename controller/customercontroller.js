@@ -24,30 +24,29 @@ router.get('/', (req, res)=> {
              pwd:req.body.pwd,
              
         });
-        emp.save((err,doc)=>
-        {
-            if(!err){
-               // res.send(doc)
-                res.redirect('/dashboard')
-            }
-            else
-            {
-                console.log("error retrieving employees :"+JSON.stringify(err,undefined,2))
-            }
-        })
-
-    
+        Customer.find((err,docs)=>{
+          if(!err)
+          {   let i=0;
+              //res.send(docs);
+              while(i<docs.length)
+              {
+                 if(docs[i].uname=emp.uname&&docs[i].pwd==emp.pwd)
+                 res.render('dashboard')
+                 i++;
+              }
+          }
+      })
 
   });
   router.use('/dashboard', (req, res)=> {
     res.render('dashboard');
   });
-//   router.use('/about', (req, res)=> {
-//     res.render('about');
-//   });
-//   router.use('/team', (req, res)=> {
-//     res.render('team');
-//   });
+  router.use('/about', (req, res)=> {
+    res.render('about');
+  });
+  router.use('/team', (req, res)=> {
+    res.render('team');
+  });
 
 // router.use('/',(req,res)=>{
 //     res.send("<h1>HI</h1>")
