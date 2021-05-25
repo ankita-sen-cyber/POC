@@ -4,13 +4,13 @@ const path= require('path')
 const router= express.Router()
 var ObjectId= require('mongoose').Types.ObjectId //for validating object id
 var { Customer }= require('../models/customer')
-
+const login=true;
 const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/', (req, res)=> {
   
-    res.render('login');
+    res.render('login',{login});
     
   });
 
@@ -34,6 +34,7 @@ router.get('/', (req, res)=> {
                  res.render('dashboard')
                  i++;
               }
+              res.render('login',{login:false});
           }
       })
 
@@ -47,7 +48,9 @@ router.get('/', (req, res)=> {
   router.use('/team', (req, res)=> {
     res.render('team');
   });
-
+  router.use('/satya', (req, res)=> {
+    res.render('authentication');
+  });
 // router.use('/',(req,res)=>{
 //     res.send("<h1>HI</h1>")
 //   })
