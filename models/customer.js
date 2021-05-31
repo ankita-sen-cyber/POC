@@ -3,7 +3,7 @@ const mongoose= require('mongoose')
 var Customer = mongoose.model('Employee', {
     uname: {type : String},   //these are assigned as coulummns in table
     pwd: {type : String},
-    date: {type : Date},
+    date: {type : String},
     description: {type : String},
     amount: {type : Number}
 })

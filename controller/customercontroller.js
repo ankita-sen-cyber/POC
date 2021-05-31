@@ -4,37 +4,40 @@ const path= require('path')
 const router= express.Router()
 var ObjectId= require('mongoose').Types.ObjectId //for validating object id
 var { Customer }= require('../models/customer')
-const login=true;
+const isUserAuthenticated=true;
 const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 
+
 router.get('/', (req, res)=> {
   
-    res.render('login',{login});
+    res.render('login',{isUserAuthenticated});
     
   });
 
   router.post('/',(req, res)=>{
 
-    console.log(req.body.uname)
+    data= new Customer()
 
 
-    var emp = new Customer({
+    emp = new Customer({
             uname:req.body.uname,       //to get name use body method
-             pwd:req.body.pwd,
+             pwd:req.body.pwd
              
         });
         Customer.find((err,docs)=>{
           if(!err)
           {   let i=0;
+              data=docs
               //res.send(docs);
               while(i<docs.length)
               {
-                 if(docs[i].uname=emp.uname&&docs[i].pwd==emp.pwd)
-                 res.render('dashboard')
+                 if(docs[i].uname==emp.uname&&docs[i].pwd==emp.pwd)
+                 res.render('dashboard',{data, emp})
                  i++;
               }
-              res.render('login',{login:false});
+              if(i==docs.length)
+              res.render('login',{isUserAuthenticated:false});
           }
       })
 
@@ -46,11 +49,9 @@ router.get('/', (req, res)=> {
     res.render('about');
   });
   router.use('/team', (req, res)=> {
-    res.render('team');
+    res.render('team',{data});
   });
-  router.use('/satya', (req, res)=> {
-    res.render('authentication');
-  });
+ 
 // router.use('/',(req,res)=>{
 //     res.send("<h1>HI</h1>")
 //   })
